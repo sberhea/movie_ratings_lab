@@ -4,12 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+from datetime import datetime 
 
 # Replace this with your code!
 class User(db.Model):
     """A user."""
 
-    __tablename__ = 'user'
+    __tablename__ = 'users'
 
     user_id = db.Column(db.Integer,
                         autoincrement=True,
@@ -42,21 +43,20 @@ class Movie(db.Model):
 
 class Rating(db.Model):
 
-    __tablename__ = 'rating'
+    __tablename__ = 'ratings'
 
     rating_id = db.Column(db.Integer,
                             autoincrement=True,
                             primary_key=True)
-        score = db.Column(db.Integer)
-        movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
-        user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    score = db.Column(db.Integer)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
         
-        movie = db.relationship('Movie', backref='ratings')
-        user = db.relationship('User', backref='ratings')
+    movie = db.relationship('Movie', backref='ratings')
+    user = db.relationship('User', backref='ratings')
  
     def __repr__(self):
         return f'<Rating rating_id={self.rating_id} score={self.score}>'
-        Can't hear you
 
 def connect_to_db(flask_app, db_uri='postgresql:///ratings', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
